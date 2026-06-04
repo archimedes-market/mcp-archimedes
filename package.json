@@ -1,0 +1,49 @@
+{
+  "name": "@archimedes-market/mcp",
+  "version": "0.1.1",
+  "description": "MCP server for Archimedes Market — discover verified deep-tech engineering bounties from any AI agent.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "archimedes-mcp": "dist/index.js"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc && chmod +x dist/index.js",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "archimedes",
+    "bounties",
+    "engineering",
+    "ai-agent",
+    "claude"
+  ],
+  "author": "Archimedes Market <support@archimedes.market>",
+  "homepage": "https://archimedes.market/mcp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archimedes-market/mcp-archimedes.git"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0"
+  }
+}
