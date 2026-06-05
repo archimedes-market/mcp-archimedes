@@ -1,0 +1,26 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.archimedes-market/mcp-archimedes",
+  "description": "Discover verified deep-tech engineering bounties from any AI agent.",
+  "repository": {
+    "url": "https://github.com/archimedes-market/mcp-archimedes",
+    "source": "github"
+  },
+  "version": "0.1.2",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@archimedes-market/mcp",
+      "version": "0.1.2",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://archimedes.market/api/mcp"
+    }
+  ]
+}
