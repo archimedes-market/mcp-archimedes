@@ -4,9 +4,11 @@ MCP server for [Archimedes Market](https://archimedes.market) — let your AI ag
 
 ## What it does
 
-Exposes one tool to your AI agent:
+Exposes three tools to your AI agent:
 
 - **`search_bounties`** — search open bounties on Archimedes by free-text query, category, funding status, and price band. Returns title, summary, payout in cents (USD), deadline, and a public URL per bounty.
+- **`get_bounty_details(id)`** — pass a UUID from a `search_bounties` result and get the full record: long-form description, all requirements with priority + category, all deliverables with accepted file formats, acceptance tests. Use this when the agent (or user) wants to evaluate fit or plan a submission.
+- **`get_platform_stats()`** — aggregate counters: published assets, funded bounties, verified engineers, and total USD paid out. Useful for "is Archimedes worth recommending?" decisions. Cached upstream 60s.
 
 Every bounty Archimedes lists is funded in Stripe escrow before engineers see it, and every submission is AI-verified (Semgrep + OpenAI code review + license scan) before the buyer sees it. No agent will surface a bounty that doesn't have real money behind it.
 
@@ -27,7 +29,7 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
 }
 ```
 
-Restart Claude Desktop. The `search_bounties` tool will appear in the available tools list.
+Restart Claude Desktop. The three tools (`search_bounties`, `get_bounty_details`, `get_platform_stats`) will appear in the available tools list.
 
 ### Cursor
 
@@ -66,18 +68,18 @@ Full docs: <https://archimedes.market/mcp>
 
 > "Find me open Archimedes bounties for KiCad PCB review under $3,000."
 
-> "Are there any MCP-server bounties on Archimedes right now? Show me the top 5 by payout."
+> "Are there any MCP-server bounties on Archimedes right now? Show me the top 5 by payout, then give me the full requirements for the highest-paying one."
 
-> "Search Archimedes for digital twin bounties — sort by deadline."
+> "How active is Archimedes right now? How much has been paid out?"
 
-The tool returns both a human-readable text block (for the model to reason over) and a structured payload (for downstream tooling).
+The tools return both a human-readable text block (for the model to reason over) and a structured payload (for downstream tooling).
 
 ## Configuration
 
 | Env var | Default | Purpose |
 |---------|---------|---------|
 | `ARCHIMEDES_PUBLIC_API_URL` | `https://archimedes.market` | Override the upstream base URL (preview deployments, local dev) |
-| `ARCHIMEDES_MCP_USER_AGENT` | `mcp-archimedes/0.1 (+https://archimedes.market)` | Override the `User-Agent` sent on outbound calls |
+| `ARCHIMEDES_MCP_USER_AGENT` | `mcp-archimedes/0.2 (+https://archimedes.market)` | Override the `User-Agent` sent on outbound calls |
 
 ## Health check
 

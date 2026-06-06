@@ -23,17 +23,27 @@ import {
   searchBountiesAsMcpResult,
   searchBountiesToolDefinition,
 } from './tools/search-bounties.js'
+import {
+  getBountyDetailsAsMcpResult,
+  getBountyDetailsToolDefinition,
+} from './tools/get-bounty-details.js'
+import {
+  getPlatformStatsAsMcpResult,
+  getPlatformStatsToolDefinition,
+} from './tools/get-platform-stats.js'
 
 const SERVER_INFO = {
   name: 'archimedes-market',
-  version: '0.1.0',
+  version: '0.2.0',
 }
 
 const SERVER_INSTRUCTIONS =
   'Archimedes Market hosts verified deep-tech engineering bounties. ' +
-  'Use search_bounties to discover paid engineering work. Every bounty ' +
-  'is funded in Stripe escrow and every submission is AI-verified ' +
-  'before the buyer sees it.'
+  'Three tools: search_bounties (discover work), get_bounty_details ' +
+  '(evaluate a specific bounty with full requirements/deliverables/tests), ' +
+  'and get_platform_stats (aggregate counters: assets, bounties, ' +
+  'engineers, USD paid out). Every bounty is funded in Stripe escrow ' +
+  'and every submission is AI-verified before the buyer sees it.'
 
 async function main() {
   const server = new Server(SERVER_INFO, {
@@ -46,7 +56,11 @@ async function main() {
   // ── tools/list ──────────────────────────────────────
   server.setRequestHandler(ListToolsRequestSchema, async () => {
     return {
-      tools: [searchBountiesToolDefinition],
+      tools: [
+        searchBountiesToolDefinition,
+        getBountyDetailsToolDefinition,
+        getPlatformStatsToolDefinition,
+      ],
     }
   })
 
@@ -55,17 +69,19 @@ async function main() {
     const { name, arguments: args } = request.params
 
     switch (name) {
-      case 'search_bounties': {
-        const result = await searchBountiesAsMcpResult(args ?? {})
-        return result
-      }
+      case 'search_bounties':
+        return searchBountiesAsMcpResult(args ?? {})
+      case 'get_bounty_details':
+        return getBountyDetailsAsMcpResult(args ?? {})
+      case 'get_platform_stats':
+        return getPlatformStatsAsMcpResult()
       default:
         return {
           isError: true,
           content: [
             {
               type: 'text' as const,
-              text: `Unknown tool: ${name}. Available: search_bounties.`,
+              text: `Unknown tool: ${name}. Available: search_bounties, get_bounty_details, get_platform_stats.`,
             },
           ],
         }

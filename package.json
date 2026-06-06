@@ -1,6 +1,6 @@
 {
   "name": "@archimedes-market/mcp",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "mcpName": "io.github.archimedes-market/mcp-archimedes",
   "description": "MCP server for Archimedes Market — discover verified deep-tech engineering bounties from any AI agent.",
   "license": "MIT",
